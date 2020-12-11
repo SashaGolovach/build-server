@@ -2,12 +2,30 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import './LoginPage.less'
 import { Form, Input, Button, Typography } from 'antd';
+import HttpClient from '../api/HttpClient';
+import { RouteComponentProps } from "react-router-dom";
+
 
 const { Title } = Typography;
 
-const LoginPage = () => {
-  const onFinish = (values : any) => {
-    console.log('Success:', values);
+interface IProps extends RouteComponentProps{
+
+}
+
+const LoginPage = (props : IProps) => {
+  const loggedIn = localStorage.getItem('accessToken') != undefined;
+  if(loggedIn){
+    props.history.push('/');
+  }
+  const onFinish = async (values : any) => {
+    console.log('Data:', values);
+    const payload = {
+        Username : values.username,
+        Password : values.password
+    }
+    const tokenResponse = await HttpClient.postAsync('auth/token', payload);
+    localStorage.setItem('accessToken', tokenResponse.Token);
+    props.history.push('/');
   };
 
   return (

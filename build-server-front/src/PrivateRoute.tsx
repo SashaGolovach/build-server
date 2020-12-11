@@ -8,7 +8,7 @@ interface IProps extends RouteProps{
 
 const PrivateRoute: React.FC<IProps> = ({component: Component, ...rest}) => {
     return <Route {...rest} render={props => (
-        true
+        localStorage.getItem('accessToken')
             ? <Component {...props}/>
             : <Redirect to={{ pathname: '/login', state: {from: props.location} }}/>
     )}/>

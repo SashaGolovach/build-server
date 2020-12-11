@@ -10,11 +10,8 @@ const App = () => {
   return <div className="App">
     <Switch>
     <PrivateRoute exact path="/" component={HomePage}/>
-      {/* <Route exact path="/" component={Home}/>
-      <Route path="/items" component={Items}/>
-      <Route path="/category" component={Category}/> */}
-      <Route exact path="/login" component={LoginPage}/>
-      <Redirect to="/login"/>
+    <Route exact path="/login" component={LoginPage}/>
+    <Redirect to="/login"/>
     </Switch>
   </div>
 };
