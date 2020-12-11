@@ -32,8 +32,8 @@ namespace Connected.DataProviders
         public Dictionary<string, string> GetClientCredentialHeaders(User user)
         {
             var headers = new Dictionary<string, string>();
-            headers.Add("Authorization",
-                $"{user.ConnectedServicesCredentials.SpotifyUserCredentials.TokenType} {user.ConnectedServicesCredentials.SpotifyUserCredentials.AccessToken}");
+            // headers.Add("Authorization",
+            //     $"{user.ConnectedServicesCredentials.SpotifyUserCredentials.TokenType} {user.ConnectedServicesCredentials.SpotifyUserCredentials.AccessToken}");
             return headers;
         }
     }

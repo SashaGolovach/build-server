@@ -7,11 +7,7 @@ namespace Connected.Mappings
     {
         public MappingProfiles()
         {
-            CreateMap<User, UserView>()
-                .ForMember(
-                    dest => dest.ConnectedServices,
-                    opt => opt.MapFrom(src => src.ConnectedServices)
-                );
+            CreateMap<User, UserView>();
         }
     }
 }

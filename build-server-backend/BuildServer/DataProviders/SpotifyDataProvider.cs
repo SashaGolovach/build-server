@@ -27,8 +27,8 @@ namespace Connected.DataProviders
         public async Task<IEnumerable<Track>> GetUserTracks(string userId)
         {
             var user = _usersService.GetUserById(userId);
-            if(user.ConnectedServicesCredentials.SpotifyUserCredentials == null)
-                throw new Exception("User does not have spotfiy credentials");
+            // if(user.ConnectedServicesCredentials.SpotifyUserCredentials == null)
+            //     throw new Exception("User does not have spotfiy credentials");
             var headers = _spotifyApiDataProvider.GetClientCredentialHeaders(user);
             var response = await _httpClientService.GetAsync<GetTracksResponse>(_spotifyApiDataProvider.SpotifyApiBaseAddress + "v1/me/tracks", headers);
             return response.Tracks.Select(item => item.Track);
