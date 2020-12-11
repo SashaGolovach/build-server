@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Form, Input, Button, Typography } from 'antd';
 import './HomePage.less'
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Menu } from 'antd';
 import {
   SettingOutlined,
   ToolOutlined,
@@ -13,39 +12,50 @@ import {
   ProjectOutlined
 } from '@ant-design/icons';
 
-const { Title } = Typography;
-const { Header, Content, Footer, Sider } = Layout;
+import ProjectsPage from '../ProjectsPage/ProjectsPage'
+import ToolsPage from '../ToolsPage/ToolsPage'
+import SettingsPage from '../SettingsPage/SettingsPage'
 const { SubMenu } = Menu;
 
 const HomePage = () => {
-  //localStorage.removeItem('accessToken');
-  const [selectedItem, setSelectedItem] = useState('mail');
+  const [selectedItem, setSelectedItem] = useState('projects');
 
   const handleClick = (e : any) => {
     console.log('click ', e);
     setSelectedItem(e.key);
   };
 
+  const getContentComponent = () => {
+    switch(true){
+      case selectedItem == 'projects':
+        return <ProjectsPage />
+      case selectedItem.startsWith('tools'):
+        return <ToolsPage />
+      case selectedItem == 'settings':
+        return <SettingsPage />
+    }
+  }
+
   return <>
       <Menu onClick={handleClick} selectedKeys={[selectedItem]} mode="horizontal">
-        <Menu.Item key="mail" icon={<ProjectOutlined />}>
+        <Menu.Item key="projects" icon={<ProjectOutlined />}>
           Projects
         </Menu.Item>
-        <Menu.Item key="app" disabled icon={<SettingOutlined />}>
+        <Menu.Item key="settings" disabled icon={<SettingOutlined />}>
           Settings
         </Menu.Item>
         <SubMenu key="SubMenu" icon={<ToolOutlined />} title="Tools">
           <Menu.ItemGroup title="Common">
-            <Menu.Item key="setting:1" icon={<CodeOutlined />}>Shell</Menu.Item>
-            <Menu.Item key="setting:2" icon={<FileOutlined />}>Files</Menu.Item>
+            <Menu.Item key="tools:ssh" icon={<CodeOutlined />}>Shell</Menu.Item>
+            <Menu.Item key="tools:files" icon={<FileOutlined />}>Files</Menu.Item>
           </Menu.ItemGroup>
           <Menu.ItemGroup title="Server">
-            <Menu.Item key="setting:3" icon={<BarChartOutlined />}>Metrics</Menu.Item>
-            <Menu.Item key="setting:4" icon={<InfoCircleOutlined />}>Logs</Menu.Item>
+            <Menu.Item key="tools:metrics" icon={<BarChartOutlined />}>Metrics</Menu.Item>
+            <Menu.Item key="tools:logs" icon={<InfoCircleOutlined />}>Logs</Menu.Item>
           </Menu.ItemGroup>
         </SubMenu>
       </Menu>
-      <p>Projects</p>
+      { getContentComponent() }
     </>
 };
 
