@@ -23,10 +23,16 @@ interface ICreateProjectFormProps {
 const CreateProjectForm = (props: ICreateProjectFormProps) => {
   const { formData, setFormData } = props;
   const formValuesChange = (field: any) => {
-    const entries = Object.entries(field)[0];
-    const fieldName = entries[0];
-    const fieldValue = entries[1];
-    formData[fieldName.toString()] = fieldValue;
+    const entries = Object.entries(field);
+    if(entries[0].toString() == "Artifacts" || entries[0].toString() == "BuildCommands"){
+      const listFieldEntries = Object.entries(entries[1][0]);
+    }
+    else{
+      const fieldName = entries[0][0];
+      const fieldValue = entries[0][1];
+      //console.log(entries);
+      formData[fieldName.toString()] = fieldValue;
+    }
     setFormData(formData);
   };
 

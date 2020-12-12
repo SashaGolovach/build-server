@@ -42,7 +42,8 @@ namespace Connected
                     builder =>
                     {
                         builder.AllowAnyOrigin()
-                            .AllowAnyHeader();
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                     });
             });
             var key = Encoding.ASCII.GetBytes(AppSettings.appSettings.JwtSecret);

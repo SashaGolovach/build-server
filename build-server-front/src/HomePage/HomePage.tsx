@@ -21,7 +21,6 @@ const HomePage = () => {
   const [selectedItem, setSelectedItem] = useState('projects');
 
   const handleClick = (e : any) => {
-    console.log('click ', e);
     setSelectedItem(e.key);
   };
 

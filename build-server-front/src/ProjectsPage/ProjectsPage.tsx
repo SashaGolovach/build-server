@@ -11,6 +11,7 @@ import {
   BarChartOutlined,
   ProjectOutlined,
   PlusOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 import "./ProjectsPage.css";
@@ -29,18 +30,18 @@ const getProjects = async () => {
   return projects;
 };
 
+const deleteProject = async (id: any) => {
+  await HttpClient.deleteAsync(`projects/${id}/`);
+};
+
 function callback(key: any) {
   console.log(key);
 }
 
-const genExtra = () => (
-  <SettingOutlined
-    onClick={(event) => {
-      // If you don't want click extra trigger collapse, you can prevent this:
-      event.stopPropagation();
-    }}
-  />
-);
+const createProject = async (project: any, projects: any) => {
+  const createdProject = await HttpClient.postAsync("projects", project);
+  projects.push(createdProject);
+};
 
 const ProjectsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -56,10 +57,25 @@ const ProjectsPage = () => {
     })();
   }, []);
 
+  const genExtra = (project: any) => (
+    <>
+      <SettingOutlined
+        onClick={(event) => {
+          // If you don't want click extra trigger collapse, you can prevent this:
+          event.stopPropagation();
+        }}
+      />
+      <DeleteOutlined onClick={() => deleteProject(project.Id)} />
+    </>
+  );
+
   const onCreateProjectClick = () => setCreatingProject(true);
   const onCreatingProjectClose = () => setCreatingProject(false);
-  const onFormSubmit = () => {
+  const onFormSubmit = async () => {
+    console.log('Create Project')
     console.log(createProjectFormData);
+    await createProject(createProjectFormData, projects);
+    setProjects(projects);
     onCreatingProjectClose();
   };
 
@@ -86,15 +102,11 @@ const ProjectsPage = () => {
                 <Empty className="empty-content" />
               ) : (
                 <Collapse onChange={callback} expandIconPosition="left">
-                  {projects.map(() => {
-                    <Panel
-                      header="This is panel header 1"
-                      key="1"
-                      extra={genExtra()}
-                    >
+                  {projects.map((p: any) => (
+                    <Panel header={p.Name} key={p.Id} extra={genExtra(p)}>
                       <div>text</div>
-                    </Panel>;
-                  })}
+                    </Panel>
+                  ))}
                 </Collapse>
               )}
               <Drawer

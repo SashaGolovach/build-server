@@ -32,7 +32,19 @@ const postAsync = async (endppoint : TBuildServerEndpoints, body : object = {}) 
     }
 }
 
+const deleteAsync = async (endppoint : TBuildServerEndpoints, query : string = '') => {
+    const url = configData.SERVER_URL + endppoint;
+    try{
+        const response = await axios.delete(url);
+        return response.data;
+    }
+    catch (err){
+        console.error(err);
+    }
+}
+
 export default {
     getAsync,
-    postAsync
+    postAsync,
+    deleteAsync
 }
