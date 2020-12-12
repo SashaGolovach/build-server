@@ -13,11 +13,9 @@ namespace Connected.Services
         private readonly IMongoCollection<User> _usersDatabase;
         private readonly IClientAuthorizationData _clientAuthorizationData;
 
-        public UsersService(MongoDatabaseSettings settings, IClientAuthorizationData clientAuthorizationData)
+        public UsersService(IMongoDatabase database, IClientAuthorizationData clientAuthorizationData)
         {
             _clientAuthorizationData = clientAuthorizationData;
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
             _usersDatabase = database.GetCollection<User>("users");
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Connected.Models;
+using Connected.Models.Requests;
 
 namespace Connected.Mappings
 {
@@ -8,6 +9,7 @@ namespace Connected.Mappings
         public MappingProfiles()
         {
             CreateMap<User, UserView>();
+            CreateMap<CreateProjectRequest, Project>();
         }
     }
 }

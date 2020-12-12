@@ -1,3 +1,13 @@
-.projects{
-    width: 80%;
+.projects-box {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.menu-header{
+    padding: 0 !important;
+}
+
+.empty-content{
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

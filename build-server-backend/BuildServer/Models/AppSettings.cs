@@ -9,5 +9,7 @@
         public string SpotifyClientId  {get; set;}
         public string SpotifyClientSecret  {get; set;}
         public string JwtEmailEncryption {get; set;}
+        public string MongoConnectionString {get; set;}
+        public string MongoDatabaseName {get; set;}
     }
 }

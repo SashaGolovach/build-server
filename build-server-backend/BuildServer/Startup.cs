@@ -18,7 +18,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using Newtonsoft.Json.Serialization;
+using MongoDatabaseSettings = Connected.Models.MongoDatabaseSettings;
 
 namespace Connected
 {
@@ -61,16 +63,15 @@ namespace Connected
                         ValidateAudience = false
                     };
                 });
-            
-            services.Configure<MongoDatabaseSettings>(
-                Configuration.GetSection(nameof(MongoDatabaseSettings)));
 
-            services.AddSingleton<MongoDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<MongoDatabaseSettings>>().Value);
+            var mongoClient = new MongoClient(AppSettings.appSettings.MongoConnectionString);
+            var database = mongoClient.GetDatabase(AppSettings.appSettings.MongoDatabaseName);
             services.AddSingleton<AppSettings>(sp => AppSettings.appSettings);
+            services.AddSingleton<IMongoDatabase>(sp => database);
             services.AddSingleton<IOAuthTokenProvider, OAuthTokenProvider>();
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IProjectsService, ProjectsService>();
             services.AddScoped<IClientAuthorizationData, ClientAuthorizationData>();
             services.AddScoped<IUsersService, UsersService>();
             services.AddScoped<SpotifyApiDataProvider>();
