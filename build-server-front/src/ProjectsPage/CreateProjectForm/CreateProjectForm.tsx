@@ -1,17 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import {
-  Drawer,
-  Form,
-  Button,
-  Col,
-  Row,
-  Input,
-  Select,
-  DatePicker,
-  Space,
-} from "antd";
+import React, { Dispatch, SetStateAction } from "react";
+import { Form, Button, Col, Row, Input, Select, Space } from "antd";
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { RouteComponentProps } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -23,14 +12,20 @@ interface ICreateProjectFormProps {
 const CreateProjectForm = (props: ICreateProjectFormProps) => {
   const { formData, setFormData } = props;
   const formValuesChange = (field: any) => {
-    const entries = Object.entries(field);
-    if(entries[0].toString() == "Artifacts" || entries[0].toString() == "BuildCommands"){
-      const listFieldEntries = Object.entries(entries[1][0]);
-    }
-    else{
-      const fieldName = entries[0][0];
-      const fieldValue = entries[0][1];
-      //console.log(entries);
+    const entries: any = Object.entries(field)[0];
+    const fieldName = entries[0] as string;
+    if (fieldName == "Artifacts" || fieldName == "BuildCommands") {
+      if (entries[1][0] == undefined) {
+        if (formData[entries[0]] == undefined) formData[entries[0]] = [];
+        formData[entries[0]].push({});
+        return;
+      }
+      const fieldEntries: any = Object.entries(entries[1][0]);
+      const [type, index] = fieldEntries[0][0].split("#");
+      formData[entries[0]][index][type] = fieldEntries[0][1];
+    } else {
+      const fieldName = entries[0];
+      const fieldValue = entries[1];
       formData[fieldName.toString()] = fieldValue;
     }
     setFormData(formData);
@@ -83,7 +78,7 @@ const CreateProjectForm = (props: ICreateProjectFormProps) => {
         <Form.List name="Artifacts">
           {(fields, { add, remove }) => (
             <>
-              {fields.map((field) => (
+              {fields.map((field, i) => (
                 <Space
                   key={field.key}
                   style={{ display: "flex", marginBottom: 8 }}
@@ -91,15 +86,15 @@ const CreateProjectForm = (props: ICreateProjectFormProps) => {
                 >
                   <Form.Item
                     {...field}
-                    name={[field.name, "first"]}
-                    fieldKey={[field.fieldKey, "first"]}
+                    name={[field.name, `Name#${i}`]}
+                    fieldKey={[field.fieldKey, `Name#${i}`]}
                   >
                     <Input placeholder="Name" />
                   </Form.Item>
                   <Form.Item
                     {...field}
-                    name={[field.name, "last"]}
-                    fieldKey={[field.fieldKey, "last"]}
+                    name={[field.name, `Path#${i}`]}
+                    fieldKey={[field.fieldKey, `Path#${i}`]}
                   >
                     <Input placeholder="Relative Path" />
                   </Form.Item>
@@ -125,7 +120,7 @@ const CreateProjectForm = (props: ICreateProjectFormProps) => {
         <Form.List name="BuildCommands">
           {(fields, { add, remove }) => (
             <>
-              {fields.map((field) => (
+              {fields.map((field, i) => (
                 <Space
                   key={field.key}
                   style={{ display: "flex", marginBottom: 8 }}
@@ -133,15 +128,15 @@ const CreateProjectForm = (props: ICreateProjectFormProps) => {
                 >
                   <Form.Item
                     {...field}
-                    name={[field.name, "first"]}
-                    fieldKey={[field.fieldKey, "first"]}
+                    name={[field.name, `Name#${i}`]}
+                    fieldKey={[field.fieldKey, `Name#${i}`]}
                   >
                     <Input placeholder="Name" />
                   </Form.Item>
                   <Form.Item
                     {...field}
-                    name={[field.name, "last"]}
-                    fieldKey={[field.fieldKey, "last"]}
+                    name={[field.name, `Command#${i}`]}
+                    fieldKey={[field.fieldKey, `Command#${i}`]}
                   >
                     <Input placeholder="Script" />
                   </Form.Item>
@@ -165,7 +160,10 @@ const CreateProjectForm = (props: ICreateProjectFormProps) => {
 
       <Row gutter={16}>
         <Col span={24}>
-          <Form.Item name="description" label="Command editor (just use to edit your scripts)">
+          <Form.Item
+            name="description"
+            label="Command editor (just use to edit your scripts)"
+          >
             <Input.TextArea rows={4} placeholder="Paste your code here" />
           </Form.Item>
         </Col>

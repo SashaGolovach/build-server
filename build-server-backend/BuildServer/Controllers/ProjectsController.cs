@@ -30,9 +30,8 @@ namespace Connected.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProject([FromBody] CreateProjectRequest projectRequest)
+        public async Task<ActionResult> CreateProject([FromBody] Project project)
         {
-            var project = _mapper.Map<Project>(projectRequest);
             await _projectsService.CreateProject(project);
             return new JsonResult(project);
         }
