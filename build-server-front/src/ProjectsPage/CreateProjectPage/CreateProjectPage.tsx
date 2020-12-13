@@ -5,7 +5,7 @@ import { Drawer } from "antd";
 
 import CreateProjectForm from "../CreateProjectForm/CreateProjectForm";
 
-interface ICreateProjectFormProps {
+interface ICreateProjectPageProps {
   formData : any,
   setFormData : any
   onCreatingProjectClose : any,
@@ -13,7 +13,7 @@ interface ICreateProjectFormProps {
   onFormSubmit : () => {}
 }
 
-const CreateProjectPage = (props: ICreateProjectFormProps) => {
+const CreateProjectPage = (props: ICreateProjectPageProps) => {
   return (
     <>
       <Drawer
